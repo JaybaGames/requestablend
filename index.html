@@ -164,11 +164,11 @@
 		</p>
 	</div>
 
-	<audio id="musicIntro" autoplay>
-	  	<source src="audios/intro.mp3" type="audio/mpeg">
-	</audio>
+	<audio id="musicIntro" src="audios/intro.mp3" type="audio/mpeg" loop></audio>
+	<audio id="musicDuring" src="audios/during.mp3" type="audio/mpeg" loop></audio>
 </body>
 <script>
+	document.querySelector("#musicIntro").volume = 0.4;
 	fullscreener = document.querySelector("#fullscreener")
 	fullscreener.querySelector("button").onclick = function(){
 		fullscreener.querySelector("button").style.filter = "brightness(70%)"
@@ -194,6 +194,9 @@
 			levelDiv.style.paddingTop = "70px"
 		}, 5000)
 		document.querySelector("#goal").style.opacity = "1";
+		document.querySelector("#musicIntro").pause();
+		document.querySelector("#musicDuring").volume = 0.2;
+		document.querySelector("#musicDuring").play();
 	}
 
 	window.onload = function(){
