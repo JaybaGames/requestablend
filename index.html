@@ -101,8 +101,9 @@
 		text-shadow: 3px 3px brown;
   		background: linear-gradient(rgb(88,52,0), rgb(38,23,0));
   		padding: 10px;
+  		padding-top: 10px;
   		opacity: 0;
-  		transition: opacity 0.5s, transform 0.5s, top 0.5s;
+  		transition: opacity 0.5s, transform 0.5s, top 0.5s, padding-top 0.5s;
   		transition-delay: 0.7s;
 	}
 	#levelDiv p {
@@ -110,16 +111,17 @@
   		transition: opacity 0.3s;
 	}
 	#levelDiv p:nth-child(1){
-		font-size: 200%;
+		font-size: 7vh;
 		margin: 0;
   		transition-delay: 1s;
 	}
 	#levelDiv p:nth-child(2){
-		font-size: 500%;
+		font-size: 17vh;
 		margin: 0;
   		transition-delay: 1.4s;
 	}
 	#goal {
+		font-size: 5vh;
 		position: fixed;
 		top: 50%;
 		left: 50%;
@@ -175,9 +177,14 @@
 		levelDiv.children[0].style.opacity = "1";
 		levelDiv.children[1].style.opacity = "1";
 		setTimeout(function(){
-			levelDiv.style.transform = "translate(-50%, -50%) scale(45%)";
+			levelDiv.style.transform = "translate(-50%, -50%) scale(50%)";
 			levelDiv.style.top = "20%";
 		}, 1500)
+		setTimeout(function(){
+			levelDiv.style.transform = "translate(-50%, -50%) scale(30%)";
+			levelDiv.style.top = "3%";
+			levelDiv.style.paddingTop = "70px"
+		}, 5000)
 		document.querySelector("#goal").style.opacity = "1";
 	}
 
