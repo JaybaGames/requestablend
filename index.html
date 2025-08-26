@@ -63,7 +63,6 @@
 		height: 100%;
 		background: #113;
 		text-align: center;
-		display: none;
 	}
 	#fullscreener div {
 		width: 50%;
@@ -71,6 +70,9 @@
 		left: 50%;
 		top: 50%;
 		transform: translate(-50%, -50%);
+	}
+	#fullscreener button {
+		filter: contrast(30%);
 	}
 </style>
 <body>
@@ -84,8 +86,8 @@
 	</div>
 	<div id="fullscreener">
 		<div>
-		<p>Set the view to fullscreen to play and for a better experience.</p>
-		<button>Set Fullscreen</button>
+		<p>Loading all assets...</p>
+		<button disabled>Set Fullscreen</button>
 		</div>
 	</div>
 </body>
@@ -94,5 +96,11 @@
 	fullscreener.querySelector("button").onclick = function(){
 		document.body.requestFullscreen();
 		fullscreener.style.display = "none"
+	}
+
+	window.onload = function(){
+		fullscreener.querySelector("p").innerHTML = "Set the view to fullscreen to play and for a better experience.";
+		fullscreener.querySelector("button").disabled = false;
+		fullscreener.querySelector("button").style.filter = "none";
 	}
 </script>
