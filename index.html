@@ -6,6 +6,7 @@
 		background: black;
 		font-family: "Nunito Sans", sans-serif;
 		color: white;
+		user-select: none;
 	}
 	img {
 		width: 100px;
@@ -54,7 +55,9 @@
 		font-family: "Nunito Sans", sans-serif;
 	}
 	button:active {
-		filter: brightness(85%);
+		filter: brightness(70%);
+		-webkit-tap-highlight-color: transparent;
+  		-webkit-tap-highlight-color: rgba(0,0,0,0);
 	}
 	#fullscreener {
 		position: fixed;
@@ -160,12 +163,17 @@
 				- Make up to $50
 		</p>
 	</div>
+
+	<audio id="musicIntro" autoplay>
+	  	<source src="audios/intro.mp3" type="audio/mpeg">
+	</audio>
 </body>
 <script>
 	fullscreener = document.querySelector("#fullscreener")
 	fullscreener.querySelector("button").onclick = function(){
+		fullscreener.querySelector("button").style.filter = "brightness(70%)"
 		document.body.requestFullscreen();
-		fullscreener.style.display = "none"
+		document.querySelector("#musicIntro").play()
 	}
 
 	playButton = document.querySelector("#playButton");
@@ -189,8 +197,33 @@
 	}
 
 	window.onload = function(){
-		fullscreener.querySelector("p").innerHTML = "Set the view to fullscreen to play and for a better experience.";
-		fullscreener.querySelector("button").disabled = false;
-		fullscreener.querySelector("button").style.filter = "none";
+		verifyScreen()
 	}
+
+	function verifyScreen(){
+		if (window.orientation === 0 || window.orientation === 180) {
+			fullscreener.style.display = "block"
+		    fullscreener.querySelector("p").innerHTML = "Please rotate your phone to landscape mode for a better experience."
+			fullscreener.querySelector("button").disabled = true;
+			fullscreener.querySelector("button").style.filter = "contrast(30%)";
+			document.querySelector("#musicIntro").pause()
+		} else {
+			fullscreener.querySelector("button").disabled = false;
+			fullscreener.querySelector("button").style.filter = "none";
+			if (document.fullscreenElement) {
+				fullscreener.style.display = "none"
+				document.querySelector("#musicIntro").play()
+			} else {  
+				fullscreener.querySelector("p").innerHTML = "Set the view to fullscreen to play and for a better experience."
+				fullscreener.style.display = "block"
+			}
+		}
+	}
+
+	document.addEventListener("fullscreenchange", () => {
+		verifyScreen()
+	});
+	window.addEventListener("orientationchange", () => {
+	  	verifyScreen()
+	});
 </script>
