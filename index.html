@@ -100,6 +100,7 @@
 		background: red;
 		font-weight: 900;
 		border-radius: 10px;
+		border: 2px solid black;
 		transform: translate(-50%, -50%);
 		text-shadow: 3px 3px brown;
   		background: linear-gradient(rgb(88,52,0), rgb(38,23,0));
@@ -130,10 +131,21 @@
 		left: 50%;
 		transform: translate(-50%, -50%) scale(115%);
 		opacity: 0;
-		transition: opacity 0.3s;
+		transition: opacity 0.3s, transform 0.5s, top 0.5s, left 0.5s;
 		font-weight: 600;
 		text-shadow: 1px 1px 2px black;
-		transition-delay: 3s;
+		margin: 0;
+	}
+	#goalPlatform {
+		border: 2px solid black;
+		width: 40vh;
+		height: 20vh;
+		position: fixed;
+		bottom: 100%;
+		left: 2%;
+		border-radius: 10px;
+  		background: linear-gradient(rgb(88,52,0), rgb(38,23,0));
+  		transition: bottom 0.5s;
 	}
 </style>
 <body>
@@ -158,6 +170,7 @@
 			<p>LEVEL</p>
 			<p>1</p>
 		</div>
+		<div id="goalPlatform"></div>
 		<p id="goal">
 			GOAL<br>
 				- Make up to $50
@@ -180,6 +193,7 @@
 	playButton.onclick = function(){
 		document.querySelector("#frame2").style.left = "0%";
 		const levelDiv = document.querySelector("#levelDiv");
+		const goal = document.querySelector("#goal")
 		levelDiv.style.display = "block";
 		levelDiv.style.opacity = "1";
 		levelDiv.children[0].style.opacity = "1";
@@ -189,11 +203,19 @@
 			levelDiv.style.top = "20%";
 		}, 1500)
 		setTimeout(function(){
-			levelDiv.style.transform = "translate(-50%, -50%) scale(30%)";
+			levelDiv.style.transform = "translate(-50%, -50%) scale(35%)";
 			levelDiv.style.top = "3%";
 			levelDiv.style.paddingTop = "70px"
 		}, 5000)
-		document.querySelector("#goal").style.opacity = "1";
+		setTimeout(function(){
+			goal.style.opacity = "1";
+		}, 3000)
+		setTimeout(function(){
+			goal.style.transform = "translate(0%, 0%) scale(70%)";
+			goal.style.left = "1%"
+			goal.style.top = "0%"
+			document.querySelector("#goalPlatform").style.bottom = "87%";
+		}, 5700)
 		document.querySelector("#musicIntro").pause();
 		document.querySelector("#musicDuring").volume = 0.2;
 		document.querySelector("#musicDuring").play();
