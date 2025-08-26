@@ -89,6 +89,47 @@
 		background-size: cover;
 		background-position: center;
 	}
+	#levelDiv {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		text-align: center;
+		background: red;
+		font-weight: 900;
+		border-radius: 10px;
+		transform: translate(-50%, -50%);
+		text-shadow: 3px 3px brown;
+  		background: linear-gradient(rgb(88,52,0), rgb(38,23,0));
+  		padding: 10px;
+  		opacity: 0;
+  		transition: opacity 0.5s, transform 0.5s, top 0.5s;
+  		transition-delay: 0.7s;
+	}
+	#levelDiv p {
+		opacity: 0;
+  		transition: opacity 0.3s;
+	}
+	#levelDiv p:nth-child(1){
+		font-size: 200%;
+		margin: 0;
+  		transition-delay: 1s;
+	}
+	#levelDiv p:nth-child(2){
+		font-size: 500%;
+		margin: 0;
+  		transition-delay: 1.4s;
+	}
+	#goal {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%) scale(115%);
+		opacity: 0;
+		transition: opacity 0.3s;
+		font-weight: 600;
+		text-shadow: 1px 1px 2px black;
+		transition-delay: 3s;
+	}
 </style>
 <body>
 	<img id="bg" src="images/bg1.jpg">
@@ -108,6 +149,14 @@
 
 	<div id="frame2">
 		<img class="genbg" src="images/bg2.jpg">
+		<div id="levelDiv">
+			<p>LEVEL</p>
+			<p>1</p>
+		</div>
+		<p id="goal">
+			GOAL<br>
+				- Make up to $50
+		</p>
 	</div>
 </body>
 <script>
@@ -119,7 +168,17 @@
 
 	playButton = document.querySelector("#playButton");
 	playButton.onclick = function(){
-		document.querySelector("#frame2").style.left = "0%"
+		document.querySelector("#frame2").style.left = "0%";
+		const levelDiv = document.querySelector("#levelDiv");
+		levelDiv.style.display = "block";
+		levelDiv.style.opacity = "1";
+		levelDiv.children[0].style.opacity = "1";
+		levelDiv.children[1].style.opacity = "1";
+		setTimeout(function(){
+			levelDiv.style.transform = "translate(-50%, -50%) scale(45%)";
+			levelDiv.style.top = "20%";
+		}, 1500)
+		document.querySelector("#goal").style.opacity = "1";
 	}
 
 	window.onload = function(){
