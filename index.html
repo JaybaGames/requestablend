@@ -278,7 +278,7 @@
 	<img id="bg" src="images/bg1.jpg">
 	<img id="logo" src="images/logo.png">
 	<div id="buttons">
-		<button id="playButton">PLAY</button>
+		<button class="clickableSound" id="playButton">PLAY</button>
 		<button>SHOP</button>
 		<button>ALBUM</button>
 		<button>SIMULATOR</button>
@@ -326,9 +326,9 @@
 			<div>
 				<p>Paused</p>
 				<div>
-					<button>RESTART LEVEL</button>
-					<button id="mainMenuButton">MAIN MENU</button>
-					<button id="resumeButton">RESUME</button>
+					<button class="clickableSound">RESTART LEVEL</button>
+					<button class="clickableSound" id="mainMenuButton">MAIN MENU</button>
+					<button class="clickableSound" id="resumeButton">RESUME</button>
 				</div>
 			</div>
 		</div>
@@ -337,6 +337,7 @@
 	<audio id="musicIntro" src="audios/intro.mp3" type="audio/mpeg" loop></audio>
 	<audio id="musicDuring" src="audios/during.mp3" type="audio/mpeg" loop></audio>
 	<audio id="pauseSound" src="audios/pause.mp3"></audio>
+	<audio id="clickableSound" src="audios/click.mp3"></audio>
 </body>
 <script>
 	if(!localStorage.questablend){
@@ -375,6 +376,7 @@
 	const salaryStat = document.querySelector("#salaryStatus");
 	const buckets = document.querySelector("#buckets")
 	const workplace = document.querySelector("#workplace")
+	const clickableSound = document.querySelector("#clickableSound")
 
 	for(let i = 0; i < buckets.children.length; i++){
 		let alright = false
@@ -525,4 +527,11 @@
 	window.addEventListener("orientationchange", () => {
 	  	verifyScreen()
 	});
+
+	for(let elem of document.querySelectorAll(".clickableSound")){
+		elem.addEventListener("click", function(){
+			clickableSound.currentTime = 0
+			clickableSound.play()
+		})
+	}
 </script>
