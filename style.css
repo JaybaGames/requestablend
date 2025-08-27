@@ -264,12 +264,16 @@ button:active {
 	bottom: 0%;
 	display: flex;
 }
-#buckets img {
+#buckets > div {
 	display: block;
-	aspect-ratio: 1;
 	position: relative;
 	top: 50%;
 	transform: translateY(-50%);
+}
+#buckets .cans {
+	position:absolute;
+	width: 100%;
+	height: 100%;
 }
 #splash {
 	position: absolute;
@@ -285,4 +289,13 @@ button:active {
 	left: 85.5%;
 	transform: translate(-50%, -50%);
 	width: 8vh;
+}
+.drops {
+	width: 12vh;
+	height: 12vh;
+	left: 50%;
+	position: absolute;
+	transform: translateX(-50%);
+	transition: bottom 0.5s;
+	bottom: 90%;
 }
