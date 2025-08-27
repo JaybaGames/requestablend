@@ -28,9 +28,15 @@
 			<img id="deleteButton" src="images/icons/deleteUnfocus.png">
 			<canvas id="splash" width="350" height="350"></canvas>
 			<div id="buckets">
-				<img id="buckBlack" src="images/buckets/black.png">
-				<img id="buckWhite" src="images/buckets/white.png">
-				<img id="buckRed" src="images/buckets/red.png">
+				<div>
+					<img class="cans" id="buckBlack" src="images/buckets/black.png">
+				</div>
+				<div>
+					<img class="cans" id="buckWhite" src="images/buckets/white.png">
+				</div>
+				<div>
+					<img class="cans" id="buckRed" src="images/buckets/red.png">
+				</div>
 			</div>
 		</div>
 
@@ -118,10 +124,23 @@
 	for(let i = 0; i < buckets.children.length; i++){
 		let alright = false
 		for(let j of userData.dyes){
-			if(j == buckets.children[i].id.slice(4)){
+			if(j == buckets.children[i].querySelector(".cans").id.slice(4)){
 				alright = true
-				buckets.children[i].addEventListener("click", function(){
-					blend(buckets.children[i].id.slice(4))
+				buckets.children[i].querySelector(".cans").addEventListener("click", function(){
+					blend(buckets.children[i].querySelector(".cans").id.slice(4))
+					let temp = document.createElement("img");
+					buckets.children[i].appendChild(temp)
+					temp.setAttribute("class", "drops")
+					temp.setAttribute("src", "images/drops/" + buckets.children[i].querySelector(".cans").id.slice(4) + ".png")
+					setTimeout(function(){
+						temp.style.bottom = "150%";	
+					}, 100)
+					setTimeout(function(){
+						temp.style.bottom = "220%";	
+					}, 500)
+					setTimeout(function(){
+						buckets.children[i].removeChild(temp)
+					}, 750)
 				})
 				break;
 			}
@@ -289,12 +308,14 @@
 	function blend(newColor){
 		paintPour.currentTime = 0
 		paintPour.play()
-		if(currentDyes.length == 0)
-			ctx.drawImage(imageSplash, 0, 0, splash.width, splash.height)
-		currentDyes.push(newColor)
+		setTimeout(function(){
+			if(currentDyes.length == 0)
+				ctx.drawImage(imageSplash, 0, 0, splash.width, splash.height)
+			currentDyes.push(newColor)
 
-		let finalColor = averageColor(nameToHex(currentDyes));
-		fillCTX(finalColor)
+			let finalColor = averageColor(nameToHex(currentDyes));
+			fillCTX(finalColor)
+		}, 600)
 	}
 
 	function fillCTX(fillColor){
