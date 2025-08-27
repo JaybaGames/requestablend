@@ -100,7 +100,7 @@
 		background: red;
 		font-weight: 900;
 		border-radius: 10px;
-		border: 2px solid black;
+		border: 5px solid black;
 		transform: translate(-50%, -50%);
 		text-shadow: 3px 3px brown;
   		background: linear-gradient(rgb(88,52,0), rgb(38,23,0));
@@ -192,6 +192,60 @@
 		left: 50%;
 		transform: translate(-50%, 50%);
 	}
+	#customerLeftStatus, #salaryStatus {
+		position: fixed;
+		width: 35vh;
+		height: min-content;
+		top: 7%;
+		transform: translateY(-50%);
+		overflow-x: clip;
+	}
+	#customerLeftStatus div, #salaryStatus div {
+		position: relative;
+		width: 100%;
+		height: 6vh;
+		border: 2px solid black;
+		border-radius: 3vh;
+  		background: linear-gradient(rgb(88,52,0), rgb(38,23,0));
+  		display: -webkit-box;
+  		transition: left 0.5s, right 0.5s;
+	}
+	#customerLeftStatus {
+		right: 50%;
+	}
+	#customerLeftStatus div {
+  		left: 100%;
+	}
+	#customerLeftStatus img {
+		position: relative;
+		top:50%;
+		left: 1vh;
+		transform: translateY(-50%);
+		width: 9vh;
+	}
+	#customerLeftStatus p, #salaryStatus p {
+		position: relative;
+		margin: 0;
+		font-size: 4vh;
+		text-shadow: 0px 2px 2px black;
+		font-weight: 700;
+		top: 55%;
+		transform: translateY(-50%);
+	}
+	#customerLeftStatus p {
+		width: max-content;
+		left: 2vh;
+	}
+	#salaryStatus {
+		left: 50%;
+	}
+	#salaryStatus div {
+		right: 110%;
+	}
+	#salaryStatus p {
+		text-align: right;
+		width: 90%;
+	}
 </style>
 <body>
 	<img id="bg" src="images/bg1.jpg">
@@ -212,6 +266,17 @@
 
 	<div id="frame2">
 		<img class="genbg" src="images/bg2.jpg">
+		<div id="customerLeftStatus">
+			<div>
+				<img src="images/customerIcon.png">
+				<p>1 left</p>
+			</div>
+		</div>
+		<div id="salaryStatus">
+			<div>
+				<p>$0</p>
+			</div>
+		</div>
 		<div id="levelDiv">
 			<p>LEVEL</p>
 			<p>1</p>
@@ -239,13 +304,40 @@
 	<audio id="pauseSound" src="audios/pause.mp3"></audio>
 </body>
 <script>
+	if(!localStorage.questablend){
+		let temp = {
+			level: 1,
+			budget: 0,
+			dyes: []
+		};
+		localStorage.questablend = JSON.stringify(temp)
+	}
+	let userData = JSON.parse(localStorage.questablend);
+
+	const config = {
+		levels: [{},
+			{
+				number: 1,
+				customers: 3
+			}, 
+			{
+				number: 2,
+				customers: 3
+			}
+		]
+	}
+</script>
+<script>
 	let rightMusic = document.querySelector("#musicIntro"); rightMusic.volume = 1
 	const fullscreener = document.querySelector("#fullscreener");
+	const pauseButton = document.querySelector("#pauseButton");
 	const resumeButton = document.querySelector("#resumeButton");
 	const pauseScreen = document.querySelector("#pauseScreen");
 	const mainMenuButton = document.querySelector("#mainMenuButton");
 	const frame2 = document.querySelector("#frame2")
 	const goalPlatform = document.querySelector("#goalPlatform")
+	const custLeftStat = document.querySelector("#customerLeftStatus");
+	const salaryStat = document.querySelector("#salaryStatus");
 
 	fullscreener.querySelector("button").onclick = function(){
 		fullscreener.querySelector("button").style.filter = "brightness(70%)"
@@ -285,7 +377,9 @@
 	}
 
 	function startLevel(){
+		custLeftStat.querySelector("p").innerHTML = config.levels[userData.level].customers + " left";
 		pauseScreen.style.display = "none"
+		levelDiv.children[1].innerHTML = userData.level;
 		levelDiv.style.paddingTop = "10px"
 		levelDiv.style.display = "block";
 		levelDiv.children[0].style.opacity = "1";
@@ -317,16 +411,24 @@
 			goal.style.left = "1%"
 			goal.style.top = "0%"
 			goalPlatform.style.bottom = "87%";
-			document.querySelector("#pauseButton").style.top = "2vh";
 		}, 5700)
+		setTimeout(function(){
+			pauseButton.style.top = "2vh";
+			custLeftStat.children[0].style.left = "0%";
+			salaryStat.children[0].style.right = "5%";
+		}, 6300)
 	}
 	function leaveLevel(){
+		custLeftStat.children[0].style.left = "300%";
+		salaryStat.children[0].style.right = "300%";
 		goal.style.top = "-40%";
 		goalPlatform.style.bottom = "100%";
 		levelDiv.style.top = "-50%"
 		pauseButton.style.top = "-40%"
 		setTimeout(function(){
 			levelDiv.style.opacity = "0";
+			custLeftStat.children[0].style.left = "100%";
+			salaryStat.children[0].style.right = "105%";
 		}, 500)
 	}
 
