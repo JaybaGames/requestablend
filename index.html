@@ -34,8 +34,8 @@
 	#buttons button {
 		margin-left: 50%;
 		transform: translate(-50%, 0%);
-		margin-bottom: 7px;
-		margin-top: 7px;
+		margin-bottom: 3px;
+		margin-top: 3px;
 		background: linear-gradient(#c72, #830);
 		border: 1px solid black;
 		font-size: 2.5vw;
@@ -108,7 +108,6 @@
   		padding-top: 10px;
   		opacity: 0;
   		transition: opacity 0.5s, transform 0.5s, top 0.5s, padding-top 0.5s;
-  		transition-delay: 0.7s;
 	}
 	#levelDiv p {
 		opacity: 0;
@@ -147,6 +146,52 @@
   		background: linear-gradient(rgb(88,52,0), rgb(38,23,0));
   		transition: bottom 0.5s;
 	}
+	#pauseButton {
+		position: fixed;
+		top: -10vh;
+		right: 2vh;
+		width: 8vh;
+		height: 8vh;
+		transition: top 0.5s;
+	}
+	#pauseButton:active {
+		transform: translateY(0.5vh);
+		filter: brightness(60%);
+	}
+	#pauseScreen {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.5);
+		text-align: center;
+		display: none;
+	}
+	#pauseScreen > div {
+		position: relative;
+		top: 44%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background: rgb(38, 38, 38);
+		width: max-content;
+		padding-left: 3vh;
+		padding-right: 3vh;
+		padding-top: 4vh;
+		border-radius: 4vh;
+		font-size: 5vh;
+	}
+	#pauseScreen button {
+		border: 2px solid black;
+		font-size: 4vh;
+		margin: 2vh;
+		background: linear-gradient(#55a, #225);
+	}
+	#pauseScreen div div {
+		position: relative;
+		bottom: 0%;
+		width: max-content;
+		left: 50%;
+		transform: translate(-50%, 50%);
+	}
 </style>
 <body>
 	<img id="bg" src="images/bg1.jpg">
@@ -156,6 +201,7 @@
 		<button>SHOP</button>
 		<button>ALBUM</button>
 		<button>SIMULATOR</button>
+		<button>SETTINGS</button>
 	</div>
 	<div id="fullscreener">
 		<div>
@@ -175,38 +221,94 @@
 			GOAL<br>
 				- Make up to $50
 		</p>
+		<img id="pauseButton" src="images/pauseButton.png">
+		<div id="pauseScreen">
+			<div>
+				<p>Paused</p>
+				<div>
+					<button>RESTART LEVEL</button>
+					<button id="mainMenuButton">MAIN MENU</button>
+					<button id="resumeButton">RESUME</button>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<audio id="musicIntro" src="audios/intro.mp3" type="audio/mpeg" loop></audio>
 	<audio id="musicDuring" src="audios/during.mp3" type="audio/mpeg" loop></audio>
+	<audio id="pauseSound" src="audios/pause.mp3"></audio>
 </body>
 <script>
-	document.querySelector("#musicIntro").volume = 0.6;
-	fullscreener = document.querySelector("#fullscreener")
+	let rightMusic = document.querySelector("#musicIntro"); rightMusic.volume = 1
+	const fullscreener = document.querySelector("#fullscreener");
+	const resumeButton = document.querySelector("#resumeButton");
+	const pauseScreen = document.querySelector("#pauseScreen");
+	const mainMenuButton = document.querySelector("#mainMenuButton");
+	const frame2 = document.querySelector("#frame2")
+	const goalPlatform = document.querySelector("#goalPlatform")
+
 	fullscreener.querySelector("button").onclick = function(){
 		fullscreener.querySelector("button").style.filter = "brightness(70%)"
 		document.body.requestFullscreen();
-		document.querySelector("#musicIntro").play()
+		rightMusic.play()
 	}
 
 	playButton = document.querySelector("#playButton");
 	playButton.onclick = function(){
-		document.querySelector("#frame2").style.left = "0%";
+		frame2.style.left = "0%";
 		const levelDiv = document.querySelector("#levelDiv");
 		const goal = document.querySelector("#goal")
+		startLevel()
+		rightMusic.pause();
+		rightMusic = document.querySelector("#musicDuring");
+		rightMusic.currentTime = 0
+		rightMusic.play(); rightMusic.volume = 1
+	}
+	pauseButton.onclick = function(){
+		rightMusic.pause()
+		pauseScreen.style.display = "block"
+		const pauseSound = document.querySelector("#pauseSound")
+		pauseSound.currentTime = 0
+		pauseSound.play()
+	}
+	resumeButton.onclick = function(){
+		pauseScreen.style.display = "none"
+		rightMusic.play()
+	}
+	mainMenuButton.onclick = function(){
+		rightMusic.pause()
+		leaveLevel();
+		frame2.style.left = "100%";
+		rightMusic = document.querySelector("#musicIntro");
+		rightMusic.currentTime = 0
+		rightMusic.play()
+	}
+
+	function startLevel(){
+		pauseScreen.style.display = "none"
+		levelDiv.style.paddingTop = "10px"
 		levelDiv.style.display = "block";
-		levelDiv.style.opacity = "1";
 		levelDiv.children[0].style.opacity = "1";
 		levelDiv.children[1].style.opacity = "1";
+		levelDiv.style.top = "50%";
+		levelDiv.style.left = "50%";
+		levelDiv.style.transform = "translate(-50%, -50%)"
+		goal.style.top = "50%";
+		goal.style.left = "50%";
+		goal.style.transform = "translate(-50%, -50%) scale(115%)";
+		goal.style.opacity = 0;
+		setTimeout(function(){
+			levelDiv.style.opacity = "1";
+		}, 700)
 		setTimeout(function(){
 			levelDiv.style.transform = "translate(-50%, -50%) scale(50%)";
 			levelDiv.style.top = "20%";
-		}, 1500)
+		}, 2000)
 		setTimeout(function(){
 			levelDiv.style.transform = "translate(-50%, -50%) scale(35%)";
 			levelDiv.style.top = "3%";
 			levelDiv.style.paddingTop = "70px"
-		}, 5000)
+		}, 5700)
 		setTimeout(function(){
 			goal.style.opacity = "1";
 		}, 3000)
@@ -214,11 +316,18 @@
 			goal.style.transform = "translate(0%, 0%) scale(70%)";
 			goal.style.left = "1%"
 			goal.style.top = "0%"
-			document.querySelector("#goalPlatform").style.bottom = "87%";
+			goalPlatform.style.bottom = "87%";
+			document.querySelector("#pauseButton").style.top = "2vh";
 		}, 5700)
-		document.querySelector("#musicIntro").pause();
-		document.querySelector("#musicDuring").volume = 0.2;
-		document.querySelector("#musicDuring").play();
+	}
+	function leaveLevel(){
+		goal.style.top = "-40%";
+		goalPlatform.style.bottom = "100%";
+		levelDiv.style.top = "-50%"
+		pauseButton.style.top = "-40%"
+		setTimeout(function(){
+			levelDiv.style.opacity = "0";
+		}, 500)
 	}
 
 	window.onload = function(){
@@ -231,16 +340,17 @@
 		    fullscreener.querySelector("p").innerHTML = "Please rotate your phone to landscape mode for a better experience."
 			fullscreener.querySelector("button").disabled = true;
 			fullscreener.querySelector("button").style.filter = "contrast(30%)";
-			document.querySelector("#musicIntro").pause()
+			rightMusic.pause()
 		} else {
 			fullscreener.querySelector("button").disabled = false;
 			fullscreener.querySelector("button").style.filter = "none";
 			if (document.fullscreenElement) {
 				fullscreener.style.display = "none"
-				document.querySelector("#musicIntro").play()
+				rightMusic.play()
 			} else {  
 				fullscreener.querySelector("p").innerHTML = "Set the view to fullscreen to play and for a better experience."
 				fullscreener.style.display = "block"
+				rightMusic.pause()
 			}
 		}
 	}
@@ -252,4 +362,3 @@
 	  	verifyScreen()
 	});
 </script>
-
