@@ -126,22 +126,7 @@
 		for(let j of userData.dyes){
 			if(j == buckets.children[i].querySelector(".cans").id.slice(4)){
 				alright = true
-				buckets.children[i].querySelector(".cans").addEventListener("click", function(){
-					blend(buckets.children[i].querySelector(".cans").id.slice(4))
-					let temp = document.createElement("img");
-					buckets.children[i].appendChild(temp)
-					temp.setAttribute("class", "drops")
-					temp.setAttribute("src", "images/drops/" + buckets.children[i].querySelector(".cans").id.slice(4) + ".png")
-					setTimeout(function(){
-						temp.style.bottom = "150%";	
-					}, 100)
-					setTimeout(function(){
-						temp.style.bottom = "220%";	
-					}, 500)
-					setTimeout(function(){
-						buckets.children[i].removeChild(temp)
-					}, 750)
-				})
+				
 				break;
 			}
 		}
@@ -151,6 +136,28 @@
 	for(let i = buckets.children.length - 1; i >= 0; i--){
 		if(buckets.children[i].mustRemove)
 			buckets.children[i].remove()
+	}
+	for(let i = 0; i < buckets.children.length; i++){
+		buckets.children[i].querySelector(".cans").addEventListener("click", function(){
+			blend(buckets.children[i].querySelector(".cans").id.slice(4))
+			let temp = document.createElement("img");
+			buckets.children[i].appendChild(temp)
+			temp.setAttribute("class", "drops")
+			temp.setAttribute("src", "images/drops/" + buckets.children[i].querySelector(".cans").id.slice(4) + ".png")
+			setTimeout(function(){
+				temp.style.bottom = "120%";	
+			}, 100)
+			setTimeout(function(){
+				temp.style.bottom = "200%";	
+				let middle = (buckets.children.length - 1)/2
+				let counted = (-((i - middle)/2)) * 300
+				console.log((50 + counted))
+				temp.style.left = (50 + counted)  + "%"
+			}, 400)
+			setTimeout(function(){
+				buckets.children[i].removeChild(temp)
+			}, 650)
+		})
 	}
 
 	if(userData.dyes.length <= 4){
@@ -420,7 +427,7 @@
 	deleteButton.addEventListener("touchend", deleteUnfocus)
 	deleteButton.addEventListener("mouseup", deleteUnfocus)
 	deleteButton.addEventListener("click", function(){
-		splash.style.transform = "translate(100%, -180%) rotate(70deg)"
+		splash.style.transform = "translate(100%, -180%) rotate(120deg)"
 		deleteSound.currentTime = 0
 		deleteSound.play()
 		setTimeout(function(){
