@@ -296,6 +296,6 @@ button:active {
 	left: 50%;
 	position: absolute;
 	transform: translateX(-50%);
-	transition: bottom 0.5s;
+	transition: bottom 0.25s, left 0.25s;
 	bottom: 90%;
 }
