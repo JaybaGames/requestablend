@@ -220,6 +220,7 @@ button:active {
 	left: 1vh;
 	transform: translateY(-50%);
 	width: 9vh;
+	transition: transform 0.1s;
 }
 #customerLeftStatus p, #salaryStatus p {
 	position: relative;
