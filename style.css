@@ -299,3 +299,30 @@ button:active {
 	transition: bottom 0.25s, left 0.25s;
 	bottom: 90%;
 }
+.cust0 {
+	position: fixed;
+	left: -125vh;
+	top: 53%;
+	transform: translateY(-50%);
+	height: 90vh;
+	width: 85vh;
+	transition: left 1.5s;
+	transition-timing-function: linear;
+}
+.cust0Walking {
+	animation-name: custWalking;
+  	animation-duration: 0.5s;
+  	animation-iteration-count: 3;
+}
+
+@keyframes custWalking {
+	0% {
+		top: 53%;
+	}
+	50% {
+		top: 50%;
+	}
+	100% {
+		top: 53%;
+	}
+}
