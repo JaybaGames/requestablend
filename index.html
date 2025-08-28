@@ -151,7 +151,6 @@
 				temp.style.bottom = "200%";	
 				let middle = (buckets.children.length - 1)/2
 				let counted = (-((i - middle)/2)) * 300
-				console.log((50 + counted))
 				temp.style.left = (50 + counted)  + "%"
 			}, 400)
 			setTimeout(function(){
@@ -437,5 +436,43 @@
 			splash.style.transition = "transform 0.3s";
 		}, 300)
 		currentDyes = [];
+	})
+
+	let startX = 0, startY = 0, moveX = 0, moveY = 0, targetX = 0, targetY = 0, curX = 0, curY = 0, isTouched = false, animID;
+	let anim  = function(){
+		curX += (targetX - curX) * 0.2
+		curY += (targetY - curY) * 0.2
+		
+		splash.style.left = "calc(50% + " + curX + "px)"
+		splash.style.top = "calc(36% + " + curY + "px)"
+
+		animID = requestAnimationFrame(anim)
+	}
+	splash.addEventListener("touchstart", function(ev){
+		isTouched = true;
+		startX = ev.touches[0].clientX
+		startY = ev.touches[0].clientY
+
+		animID = requestAnimationFrame(anim)
+	})
+	document.addEventListener("touchmove", function(ev){
+		if(isTouched){
+			moveX = ev.touches[0].clientX
+			moveY = ev.touches[0].clientY
+			targetX = moveX - startX
+			targetY= moveY - startY
+
+		}
+	})
+	document.addEventListener("touchend", function(){
+		isTouched = false;
+		startX = startY = moveX = moveY = targetX = targetY = curX = curY = 0
+		cancelAnimationFrame(animID)
+		splash.style.transition = "transform 0.3s, left 0.3s, top 0.3s"
+		splash.style.top = "36%"
+		splash.style.left = "50%"
+		setTimeout(function(){
+			splash.style.transition = "transform 0.3s"
+		}, 300)
 	})
 </script>
