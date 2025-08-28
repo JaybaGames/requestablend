@@ -222,8 +222,13 @@
 	}
 
 	function swapCust() {
-		if(custLeftCount > 0)
+		if(custLeftCount > 0){
 			custLeftStat.querySelector("p").innerHTML = --custLeftCount + " left"
+			custLeftStat.querySelector("img").style.transform = "translateY(-4vh) scale(1.6) rotate(-5deg)";
+			setTimeout(function(){
+				custLeftStat.querySelector("img").style.transform = "";
+			}, 100)
+		}
 		if(custA.style.left == "7vh"){
 			custA.classList.add("cust0Walking")
 			custA.style.left = "-125vh"
