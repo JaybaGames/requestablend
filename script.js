@@ -40,7 +40,7 @@
 		],
 		customers: {
 			builder: {
-				time: 15,
+				time: 12,
 				dyeMaxCount: 2,
 				pay: 5,
 				diffMax: 60
@@ -153,6 +153,7 @@
 		rightMusic.play()
 	}
 
+	let orderNow = false
 	let custLeftCount = config.levels[userData.level].customers.length
 	function startLevel(){
 		custLeftStat.querySelector("p").innerHTML = custLeftCount + " left";
@@ -219,12 +220,24 @@
 			workplace.style.right = "5vh";
 		}, 6300)
 		setTimeout(function(){
-			custA.setAttribute("src", "images/customers/" + config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount][0]+ ".png")
+			custA.querySelector("img").setAttribute("src", "images/customers/" + config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount][0]+ ".png")
+			if(config.levels[userData.level].customers.length > 1)
+				custB.querySelector("img").setAttribute("src", "images/customers/" + config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount + 1][0]+ ".png")
 			custA.classList.add("cust0Walking")
 			custA.style.left = "7vh"
 		}, 7000)
 		setTimeout(function(){
 			custA.classList.remove("cust0Walking")
+			orderNow = true
+			custA.querySelector("canvas").style.display = "block"
+			let time;
+			for(let i in Object.keys(config.customers)){
+				if (Object.keys(config.customers)[i] == config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount][0]){
+					time = Object.values(config.customers)[i].time; break;
+					console.log(Object.keys(config.customers)[i])
+				}
+			}
+			custStartTiming(custA.querySelector("canvas"), time)
 		}, 8750)
 	}
 	function leaveLevel(){
@@ -265,17 +278,28 @@
 			}, 100)
 		}
 		if(custA.style.left == "7vh"){
+			orderNow = false
 			custA.classList.add("cust0Walking")
 			custA.style.left = "-125vh"
-			if(custLeftCount > 0){
-				custB.setAttribute("src", "images/customers/" + config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount][0]+ ".png")
+			if(custLeftCount > 0){				
 				custB.classList.add("cust0Walking")
 				custB.style.left = "7vh"
 				setTimeout(function(){
 					custB.classList.remove("cust0Walking")
+					orderNow = true
+					custB.querySelector("canvas").style.display = "block"
+					let time;
+					for(let i in Object.keys(config.customers)){
+						if (Object.keys(config.customers)[i] == config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount][0]){
+							
+							time = Object.values(config.customers)[i].time; break;
+						}
+					}
+					custStartTiming(custB.querySelector("canvas"), time)
 					custA.classList.remove("cust0Walking")
 
 					if(custLeftCount > 1){
+						custA.querySelector("img").setAttribute("src", "images/customers/" + config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount + 1][0]+ ".png")
 						let tempColor;
 						if(config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount + 1].length > 2){
 							let randomIndex = Math.floor(Math.random()*(config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount + 1].length-1))
@@ -286,22 +310,33 @@
 						}
 
 						newOrder(custA.querySelector("canvas"), tempColor)
+						custA.querySelector("canvas").style.display = "none"
 					}
 				}, 1750)
 			}
 		}
 		else {
+			orderNow = false
 			custB.classList.add("cust0Walking")
 			custB.style.left = "-125vh"
 			if(custLeftCount > 0){
-				custA.setAttribute("src", "images/customers/" + config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount][0]+ ".png")
 				custA.classList.add("cust0Walking")
 				custA.style.left = "7vh"
 				setTimeout(function(){
+					orderNow = true
 					custA.classList.remove("cust0Walking")
+					custA.querySelector("canvas").style.display = "block"
+					let time;
+					for(let i in Object.keys(config.customers)){
+						if (Object.keys(config.customers)[i] == config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount][0]){
+							time = Object.values(config.customers)[i].time; break;
+						}
+					}
+					custStartTiming(custA.querySelector("canvas"), time)
 					custB.classList.remove("cust0Walking")
 
 					if(custLeftCount > 1){
+						custB.querySelector("img").setAttribute("src", "images/customers/" + config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount + 1][0]+ ".png")
 						let tempColor;
 						if(config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount + 1].length > 2){
 							let randomIndex = Math.floor(Math.random()*(config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount + 1].length-1))
@@ -312,6 +347,7 @@
 						}
 
 						newOrder(custB.querySelector("canvas"), tempColor)
+						custB.querySelector("canvas").style.display = "none"
 					}
 				}, 1750)
 			}
@@ -436,21 +472,19 @@
 	}
 
 	function nameToHex(colors) {
-	  const colorMap = {
-	    "Black": "#000000",
-	    "White": "#ffffff",
-	    "Green": "#00ff00",
-	    "Red": "#ff0000",
-	    "Blue": "#0000ff",
-	    "Yellow": "#ffff00",
-	    "Cyan": "#00ffff",
-	    "Magenta": "#ff00ff",
-	    // Add more if needed
-	  };
-	  return colors.map(c => colorMap[c] || null); // returns null if not found
+		const colorMap = {
+			"Black": "#000000",
+			"White": "#ffffff",
+			"Green": "#00ff00",
+		    "Red": "#ff0000",
+		    "Blue": "#0000ff",
+		    "Yellow": "#ffff00",
+		    "Cyan": "#00ffff",
+		    "Magenta": "#ff00ff"
+		  };
+		  return colors.map(c => colorMap[c] || null);
 	}
 
-	// Example
 	let inputColors = ["Black", "White", "Green"];
 	let hexColors = nameToHex(inputColors);
 
@@ -501,6 +535,8 @@
 		currentDyes = [];
 	})
 
+	let isServing = false
+
 	let startX = 0, startY = 0, moveX = 0, moveY = 0, targetX = 0, targetY = 0, curX = 0, curY = 0, isTouched = false, animID;
 	let anim  = function(){
 		curX += (targetX - curX) * 0.2
@@ -524,12 +560,32 @@
 			moveY = ev.touches[0].clientY
 			targetX = moveX - startX
 			targetY= moveY - startY
-
 		}
 	})
+	let timing;
 	document.addEventListener("touchend", function(){
+		if(splash.getBoundingClientRect().left < window.innerHeight*0.95)
+			isServing = true
 		if(isTouched){
-			swapCust()
+			if(isServing && currentDyes.length > 0 && orderNow){
+				if(custA.style.left == "7vh")
+					custA.querySelector("p").style.opacity = 1
+				else
+					custB.querySelector("p").style.opacity = 1
+				setTimeout(function(){
+					custA.querySelector("p").style.opacity = 0
+					custB.querySelector("p").style.opacity = 0
+				}, 3000)
+				splash.getContext("2d").clearRect(0, 0, splash.width, splash.height)
+				currentDyes = [];
+				setTimeout(function(){
+					splash.style.transition = "none";
+					splash.style.transform = "translate(-50%, -50%)"
+					splash.style.transition = "transform 0.3s";
+				}, 300)
+				if(timing != null) clearInterval(timing)
+				swapCust()
+			}
 		}
 		isTouched = false;
 		startX = startY = moveX = moveY = targetX = targetY = curX = curY = 0
@@ -540,17 +596,16 @@
 		setTimeout(function(){
 			splash.style.transition = "transform 0.3s"
 		}, 300)
+		isServing = false
 	})
 
 function newOrder(canvas, color){
 	const ctx = canvas.getContext("2d");
 	const center = canvas.width/2
 
-	ctx.beginPath()
-	ctx.arc(center, center, Math.round(canvas.width*0.42), 0, 2 * Math.PI);
-	ctx.fillStyle = "black";
-	ctx.fill();
+	let topData;
 
+	ctx.clearRect(0,0,canvas.width,canvas.height)
 	ctx.beginPath()
 	ctx.arc(center, center, Math.round(canvas.width*0.4), 0, 2 * Math.PI);
 	ctx.fillStyle = "white";
@@ -558,7 +613,54 @@ function newOrder(canvas, color){
 
 	const toScale = 0.6
 	ctx.drawImage(imageSplashSmall, canvas.width*(1-toScale)/2, canvas.height*(1-toScale)/2, canvas.width*toScale, canvas.height*toScale)
-	
 
 	fillCTX(canvas, color)
+
+	topData = new Image()
+	topData.src = canvas.toDataURL()
+	canvas.topData = topData
+
+	ctx.beginPath()
+	ctx.arc(center, center, Math.round(canvas.width*0.48), 0, 2 * Math.PI);
+	ctx.fillStyle = "black";
+	ctx.fill();
+}
+
+let curSecs;
+let targetSecs;
+
+function custStartTiming(canvas, secs){
+	curSecs = targetSecs = secs
+	const ctx = canvas.getContext("2d");
+	const center = canvas.width/2
+
+	timing = setInterval(function(){
+		if(curSecs <= 0){
+			clearInterval(timing)
+			swapCust()
+		}
+
+		curSecs -= 0.08
+
+		if(curSecs >= 0.5*secs)
+			ctx.fillStyle = "#0c3"
+		else if(curSecs >= 0.25*secs)
+			ctx.fillStyle = "#db0"
+		else
+			ctx.fillStyle = "#d00"
+
+		ctx.beginPath()
+		ctx.arc(center, center, Math.round(canvas.width*0.44), 0, 2 * Math.PI);
+		ctx.fill();
+
+		ctx.beginPath()
+		ctx.moveTo(center,center)
+		let perc = Math.abs(targetSecs - curSecs)/targetSecs
+		ctx.arc(center, center, Math.round(canvas.width*0.44), 1.5 * Math.PI, (1.5 + (perc*2)) * Math.PI);
+		ctx.closePath()
+		ctx.fillStyle = "white"
+		ctx.fill()
+
+		ctx.drawImage(canvas.topData,0,0)
+	}, 80)
 }
