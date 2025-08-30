@@ -716,6 +716,7 @@ function custStartTiming(canvas, secs){
 			clearInterval(timing)
 			paymentInfo.style.color = "red"
 			paymentInfo.innerHTML = "-$3 Wage"
+			failCust.play()
 			swapCust()
 		}
 
