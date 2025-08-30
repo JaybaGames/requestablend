@@ -39,13 +39,17 @@
 		if(buckets.children[i].mustRemove)
 			buckets.children[i].remove()
 	}
+
 	for(let i = 0; i < buckets.children.length; i++){
+		let tempImg = new Image()
+		tempImg.setAttribute("src", "images/drops/" + buckets.children[i].querySelector(".cans").id.slice(4) + ".png")
+		buckets.children[i].querySelector(".cans").dropImg = tempImg
 		buckets.children[i].querySelector(".cans").addEventListener("click", function(){
 			blend(buckets.children[i].querySelector(".cans").id.slice(4))
 			let temp = document.createElement("img");
 			buckets.children[i].appendChild(temp)
 			temp.setAttribute("class", "drops")
-			temp.setAttribute("src", "images/drops/" + buckets.children[i].querySelector(".cans").id.slice(4) + ".png")
+			temp.setAttribute("src", buckets.children[i].querySelector(".cans").dropImg.src)
 			setTimeout(function(){
 				temp.style.bottom = "120%";	
 			}, 100)
@@ -240,17 +244,6 @@
 	function swapCust() {
 		paymentInfo.style.opacity = 1
 		paymentInfo.style.top = "5vh"
-		const income = salaryStat.querySelector("p")
-		paySound.play()
-		income.innerHTML = "$" + curIncome;
-		income.style.color = "#8f0"
-		income.style.transform = "translate(0%, -50%) scale(1.8)"
-		income.style.fontWeight = 900
-		setTimeout(function(){
-			income.style.color = "white"
-			income.style.transform = "translate(0%, -50%)"
-			income.style.fontWeight = 700
-		}, 170)
 
 		setTimeout(function(){
 			paymentInfo.style.opacity = 0
@@ -603,6 +596,17 @@
 						}
 
 						swapCust()
+						const income = salaryStat.querySelector("p")
+						paySound.play()
+						income.innerHTML = "$" + curIncome;
+						income.style.color = "#8f0"
+						income.style.transform = "translate(0%, -50%) scale(1.8)"
+						income.style.fontWeight = 900
+						setTimeout(function(){
+							income.style.color = "white"
+							income.style.transform = "translate(0%, -50%)"
+							income.style.fontWeight = 700
+						}, 170)
 						angryFlag = 0
 					},500)
 				}
