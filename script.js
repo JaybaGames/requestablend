@@ -14,7 +14,7 @@
 				number: 1,
 				customers: [
 					["builder", "#ffffff"],
-					["builder", "#aaaaaa"],
+					["builder", "#000000"],
 					["builder", "#808080"],
 				]
 			}, 
@@ -786,3 +786,4 @@ function verifyOrder(color1, color2, tolerance){
 	if (perc <= 0) return 0
 	else return perc
 }
+
