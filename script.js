@@ -290,11 +290,13 @@
 		custA.querySelector("canvas").style.display = "none"
 		custB.querySelector("canvas").style.display = "none"
 		if(custLeftCount > 0){
+			setTimeout(function(){
 			custLeftStat.querySelector("p").innerHTML = --custLeftCount + " left"
 			custLeftStat.querySelector("img").style.transform = "translateY(-4vh) scale(1.6) rotate(-5deg)";
 			setTimeout(function(){
 				custLeftStat.querySelector("img").style.transform = "";
 			}, 100)
+			},1500)
 		}
 		setTimeout(function(){curOrder = nextOrder}, 500)
 		if(custA.style.left == "7vh"){
@@ -786,4 +788,5 @@ function verifyOrder(color1, color2, tolerance){
 	if (perc <= 0) return 0
 	else return perc
 }
+
 
