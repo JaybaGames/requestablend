@@ -363,3 +363,10 @@ button:active {
 		top: 57%;
 	}
 }	
+.cust0 h3 {
+	position: absolute;
+	top: 20%;
+	left: 20%;
+	transform: translate(-50%, -50%);
+	color: red;
+}
