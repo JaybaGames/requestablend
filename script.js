@@ -281,6 +281,8 @@
 	}
 
 	function swapCust() {
+		custA.querySelector("canvas").style.display = "none"
+		custB.querySelector("canvas").style.display = "none"
 		if(custLeftCount > 0){
 			custLeftStat.querySelector("p").innerHTML = --custLeftCount + " left"
 			custLeftStat.querySelector("img").style.transform = "translateY(-4vh) scale(1.6) rotate(-5deg)";
@@ -618,6 +620,11 @@
 						swapCust()
 					},500)
 				}
+				else {
+					setTimeout(function(){
+						oldSecs = curSecs
+					}, 500)
+				}
 
 				splash.getContext("2d").clearRect(0, 0, splash.width, splash.height)
 				currentDyes = [];
@@ -670,9 +677,12 @@ function newOrder(canvas, color){
 
 let curSecs;
 let targetSecs;
+let secDecre = 0.08
+let oldSecs;
 
 function custStartTiming(canvas, secs){
 	curSecs = targetSecs = secs
+	oldSecs = targetSecs * 2
 	const ctx = canvas.getContext("2d");
 	const center = canvas.width/2
 
@@ -682,8 +692,12 @@ function custStartTiming(canvas, secs){
 			swapCust()
 		}
 
-		curSecs -= 0.08
+		if(curSecs <= (oldSecs - targetSecs*0.4))
+			secDecre = 0.05
+		else
+			secDecre = 0.5
 
+		curSecs -= secDecre
 		if(curSecs >= 0.5*secs)
 			ctx.fillStyle = "#0c3"
 		else if(curSecs >= 0.25*secs)
@@ -704,7 +718,7 @@ function custStartTiming(canvas, secs){
 		ctx.fill()
 
 		ctx.drawImage(canvas.topData,0,0)
-	}, 80)
+	}, 50)
 }
 function verifyOrder(color1, color2, tolerance){
 	color1 = color1.slice(1)
