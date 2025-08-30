@@ -8,52 +8,6 @@
 	}
 	let userData = JSON.parse(localStorage.questablend);
 
-	const config = {
-		levels: [{},
-			{
-				number: 1,
-				customers: [
-					["builder", "#ffffff"],
-					["builder", "#000000"],
-					["builder", "#808080"],
-				]
-			}, 
-			{
-				number: 2,
-				customers: [
-					["builder", "#808080"],
-					["builder", "#555555"],
-					["builder", "#aaaaaa"]
-				]
-			},
-			{
-				number: 3,
-				customers: [
-					["builder", "#808080", "#555555", "#aaaaaa"],
-					["painter", "random"],
-					["builder", "random"]
-				]
-			}
-		],
-		dyePerLevel: [
-			["Red", 3]
-		],
-		customers: {
-			builder: {
-				time: 12,
-				dyeMaxCount: 2,
-				pay: 5,
-				diffMax: 120
-			},
-			painter: {
-				time: 25,
-				dyeMaxCount: 3,
-				pay: 12,
-				diffMax: 40
-			}
-		}
-	}
-
 	let rightMusic = document.querySelector("#musicIntro");
 	const fullscreener = document.querySelector("#fullscreener");
 	const pauseButton = document.querySelector("#pauseButton");
@@ -158,6 +112,9 @@
 	let nextOrder;
 	let orderNow = false
 	let custLeftCount = config.levels[userData.level].customers.length
+	let curIncome = 0;
+	let custMaxPay;
+
 	function startLevel(){
 		custLeftStat.querySelector("p").innerHTML = custLeftCount + " left";
 		pauseScreen.style.display = "none"
@@ -244,7 +201,8 @@
 			let time;
 			for(let i in Object.keys(config.customers)){
 				if (Object.keys(config.customers)[i] == config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount][0]){
-					time = Object.values(config.customers)[i].time; break;
+					time = Object.values(config.customers)[i].time;
+					custMaxPay = Object.values(config.customers)[i].pay; break;
 				}
 			}
 			custStartTiming(custA.querySelector("canvas"), time)
@@ -282,6 +240,18 @@
 	function swapCust() {
 		paymentInfo.style.opacity = 1
 		paymentInfo.style.top = "5vh"
+		const income = salaryStat.querySelector("p")
+		paySound.play()
+		income.innerHTML = "$" + curIncome;
+		income.style.color = "#8f0"
+		income.style.transform = "translate(0%, -50%) scale(1.8)"
+		income.style.fontWeight = 900
+		setTimeout(function(){
+			income.style.color = "white"
+			income.style.transform = "translate(0%, -50%)"
+			income.style.fontWeight = 700
+		}, 170)
+
 		setTimeout(function(){
 			paymentInfo.style.opacity = 0
 			paymentInfo.style.top = "15vh"
@@ -290,13 +260,14 @@
 		custA.querySelector("canvas").style.display = "none"
 		custB.querySelector("canvas").style.display = "none"
 		if(custLeftCount > 0){
+			custLeftCount--
 			setTimeout(function(){
-			custLeftStat.querySelector("p").innerHTML = --custLeftCount + " left"
-			custLeftStat.querySelector("img").style.transform = "translateY(-4vh) scale(1.6) rotate(-5deg)";
-			setTimeout(function(){
-				custLeftStat.querySelector("img").style.transform = "";
-			}, 100)
-			},1500)
+				custLeftStat.querySelector("p").innerHTML = custLeftCount + " left"
+				custLeftStat.querySelector("img").style.transform = "translateY(-4vh) scale(1.6) rotate(-5deg)";
+				setTimeout(function(){
+					custLeftStat.querySelector("img").style.transform = "";
+				}, 100)
+			}, 1000)
 		}
 		setTimeout(function(){curOrder = nextOrder}, 500)
 		if(custA.style.left == "7vh"){
@@ -315,7 +286,8 @@
 					for(let i in Object.keys(config.customers)){
 						if (Object.keys(config.customers)[i] == config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount][0]){
 							time = Object.values(config.customers)[i].time;
-							curToler = Object.values(config.customers)[i].diffMax; break;
+							curToler = Object.values(config.customers)[i].diffMax;
+							custMaxPay = Object.values(config.customers)[i].pay; break;
 						}
 					}
 					custStartTiming(custB.querySelector("canvas"), time)
@@ -357,7 +329,8 @@
 					for(let i in Object.keys(config.customers)){
 						if (Object.keys(config.customers)[i] == config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount][0]){
 							time = Object.values(config.customers)[i].time; 
-							curToler = Object.values(config.customers)[i].diffMax; break;
+							curToler = Object.values(config.customers)[i].diffMax;
+							custMaxPay = Object.values(config.customers)[i].pay; break;
 						}
 					}
 					custStartTiming(custA.querySelector("canvas"), time)
@@ -618,6 +591,9 @@
 				}, 490)
 				if(perc){
 					if(timing != null) clearInterval(timing)
+					curIncome += Math.round(perc * custMaxPay);
+					paymentInfo.innerHTML = "+$" + Math.round(perc * custMaxPay) + " Revenue"
+					paymentInfo.style.color = "#4f4"
 					setTimeout(function(){
 						if(custA.style.left == "7vh"){
 							custA.querySelector("canvas").style.display = "none"
@@ -625,6 +601,7 @@
 						else{
 							custB.querySelector("canvas").style.display = "none"
 						}
+
 						swapCust()
 						angryFlag = 0
 					},500)
@@ -733,6 +710,8 @@ function custStartTiming(canvas, secs){
 	timing = setInterval(function(){
 		if(curSecs <= 0){
 			clearInterval(timing)
+			paymentInfo.style.color = "red"
+			paymentInfo.innerHTML = "-$3 Wage"
 			swapCust()
 		}
 
@@ -788,5 +767,3 @@ function verifyOrder(color1, color2, tolerance){
 	if (perc <= 0) return 0
 	else return perc
 }
-
-
