@@ -280,6 +280,12 @@
 	}
 
 	function swapCust() {
+		paymentInfo.style.opacity = 1
+		paymentInfo.style.top = "5vh"
+		setTimeout(function(){
+			paymentInfo.style.opacity = 0
+			paymentInfo.style.top = "15vh"
+		}, 1500)
 		angryFlag = 0
 		custA.querySelector("canvas").style.display = "none"
 		custB.querySelector("canvas").style.display = "none"
