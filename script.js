@@ -16,7 +16,6 @@
 					["builder", "#ffffff"],
 					["builder", "#aaaaaa"],
 					["builder", "#808080"],
-					["painter", "#aaaaaa"],
 				]
 			}, 
 			{
@@ -281,6 +280,7 @@
 	}
 
 	function swapCust() {
+		angryFlag = 0
 		custA.querySelector("canvas").style.display = "none"
 		custB.querySelector("canvas").style.display = "none"
 		if(custLeftCount > 0){
@@ -618,6 +618,7 @@
 							custB.querySelector("canvas").style.display = "none"
 						}
 						swapCust()
+						angryFlag = 0
 					},500)
 				}
 				else {
@@ -675,6 +676,41 @@ function newOrder(canvas, color){
 	ctx.fill();
 }
 
+let angryFlag = 0
+function angry(level){
+	let elem;
+	console.log()
+	if(custA.getBoundingClientRect().left > 0) elem = custA 
+	else elem = custB
+
+	function temp(){
+		elem.querySelector("h3").style.transform = "translate(-50%, -50%) rotate(-15deg) scale(1.5)";
+		setTimeout(function(){
+			elem.querySelector("h3").style.transform = "translate(-50%, -50%) rotate(-15deg)";
+		}, 250)
+	}
+
+	if(level == 1 && angryFlag < 1){
+		elem.querySelector("h3").innerHTML = "!"
+		temp()
+		angryFlag = 1
+	}
+	else if (level == 2 && angryFlag < 2){
+		elem.querySelector("h3").innerHTML = "!!"
+		temp()
+		angryFlag = 2
+	}
+	else if (level == 3 && angryFlag < 3){
+		elem.querySelector("h3").innerHTML = "!!!"
+		temp()
+		angryFlag = 3
+		setTimeout(function(){
+			elem.querySelector("h3").innerHTML = ""
+			angryFlag = 0
+		},1500)
+	}
+}
+
 let curSecs;
 let targetSecs;
 let secDecre = 0.08
@@ -698,12 +734,19 @@ function custStartTiming(canvas, secs){
 			secDecre = 0.5
 
 		curSecs -= secDecre
-		if(curSecs >= 0.5*secs)
+		if(curSecs >= 0.4*secs)
 			ctx.fillStyle = "#0c3"
-		else if(curSecs >= 0.25*secs)
+		else if(curSecs >= 0.2*secs){
+			angry(1)
 			ctx.fillStyle = "#db0"
-		else
+		}
+		else if(curSecs >= 0){
+			angry(2)
 			ctx.fillStyle = "#d00"
+		}
+		else{
+			angry(3)	
+		}
 
 		ctx.beginPath()
 		ctx.arc(center, center, Math.round(canvas.width*0.44), 0, 2 * Math.PI);
