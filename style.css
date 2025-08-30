@@ -90,6 +90,7 @@ button:active {
 	position: fixed;
 	background-size: cover;
 	background-position: center;
+	filter: brightness(0.6);
 }
 #levelDiv {
 	position: fixed;
@@ -373,4 +374,20 @@ button:active {
 	font-weight: bold;
 	-webkit-text-stroke: 0.75vh black;
 	transition: transform 0.25s;
+}
+#paymentInfo {
+	position: fixed;
+	width: 85vh;
+	display: flex;
+	justify-content: center;
+	left: 5vh;
+	top: 15vh;
+	transform: translateY(-50%);
+	font-size: 4vh;
+	font-weight: 700;
+	color: #4f4;
+	text-shadow: 0vh 0vh 1vh black;
+	z-index: 100;
+	opacity: 0;
+	transition: top 2.5s;
 }
