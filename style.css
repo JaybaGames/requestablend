@@ -231,11 +231,11 @@ button:active {
 	text-shadow: 0px 2px 2px black;
 	font-weight: 700;
 	top: 55%;
-	transform: translateY(-50%);
 }
 #customerLeftStatus p {
 	width: max-content;
 	left: 2vh;
+	transform: translateY(-50%);
 }
 #salaryStatus {
 	left: 50%;
@@ -244,8 +244,11 @@ button:active {
 	right: 110%;
 }
 #salaryStatus p {
-	text-align: right;
-	width: 90%;
+	width: min-content;
+	transform: translate(0%, -50%);
+	right: 5%;
+	transition: transform 0.08s;
+	position: absolute;
 }
 #workplace {
 	position: fixed;
