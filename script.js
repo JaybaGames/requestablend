@@ -275,6 +275,7 @@
 					custB.classList.remove("cust0Walking")
 					orderNow = true
 					custB.querySelector("canvas").style.display = "block"
+					custA.querySelector("h3").innerHTML = ""
 					let time;
 					for(let i in Object.keys(config.customers)){
 						if (Object.keys(config.customers)[i] == config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount][0]){
@@ -318,6 +319,7 @@
 					orderNow = true
 					custA.classList.remove("cust0Walking")
 					custA.querySelector("canvas").style.display = "block"
+					custB.querySelector("h3").innerHTML = ""
 					let time;
 					for(let i in Object.keys(config.customers)){
 						if (Object.keys(config.customers)[i] == config.levels[userData.level].customers[config.levels[userData.level].customers.length - custLeftCount][0]){
@@ -347,6 +349,12 @@
 				}, 1750)
 			}
 		}
+		if(custLeftCount == 0){
+			finishLevel()
+		}
+	}
+	function finishLevel(){
+		
 	}
 
 	window.onload = function(){
