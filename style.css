@@ -79,7 +79,7 @@ button:active {
 #frame2 {
 	left: 100%;
 	z-index: 2;
-	width: 100%
+	width: 100%;
 	height: 100%;
 	position: fixed;
 	transition: left 0.7s;
@@ -399,24 +399,39 @@ button:active {
 	width: 100vw;
 	height: 100vh;
 	background: rgba(0,0,0,0.5);
-	display: none
-}
-#finishScreen * {
-	margin: 0;
-	font-size: 4vh;
+	display: none; 
+	top: -0%;
+	/* display: inline-block; */
 }
 #finishScreen > div {
 	position: relative;
 	top: 50%;
 	left: 50%;
-	width: max-content;
-	transform: translate(-50%, -50%);
-	padding: 7vh;
-	padding-left: 19vh;
-	padding-right: 19vh;
+	transform: translate(-50%,-50%);
+	width: 120vh;
 	background: #333;
+	height: 60vh;
+	border-radius: 3vh;
+	display: none;
 }
-#finishScreen h3{
-	text-align: center;
-	margin-bottom: 3vh;
+#finishScreen > div.active {
+	display: block;
+}
+#finishScreen > div * {
+	margin: 0;
+}
+#finishScreen > div:nth-child(1) *{
+	width: 45%;
+	float: left;
+	font-size: 6vh;
+	font-weight: 900;
+	text-shadow: 0px 5px 5px black;
+	color: orange;
+	margin: 2.5vh;
+}
+#finishScreen > div:nth-child(1) *:nth-child(odd){
+	text-align: right;
+}
+#finishScreen > div:nth-child(1) *:nth-child(-n+2){
+	margin-top: 9vh;
 }
