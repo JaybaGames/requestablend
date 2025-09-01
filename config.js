@@ -6,6 +6,7 @@ const config = {
 				["builder", "#ffffff"],
 				["builder", "#000000"],
 				["builder", "#808080"],
+				["painter", "#bfbfbf"],
 			]
 		}, 
 		{
